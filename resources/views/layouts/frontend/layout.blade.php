@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 
-    @vite("resource/css/app.css")
+    @vite("resources/css/app.css")
 </head>
 <body>
     <div id="app">
-        Frontend
+        <router-view></router-view>
     </div>
 
-    @vite("resource/js/app.js")
+    @vite("resources/js/app.js")
 </body>
 </html>
