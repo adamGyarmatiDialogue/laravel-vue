@@ -1,7 +1,6 @@
 import "./bootstrap";
 import { createApp } from "vue/dist/vue.esm-bundler";
 import { createRouter, createWebHistory } from "vue-router";
-import Layout from "./Layouts/Frontend/Layout.vue";
 import FrontendRoutes from "./Routes/Frontend/Routes";
 
 // Routes

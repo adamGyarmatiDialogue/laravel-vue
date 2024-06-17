@@ -1,5 +1,7 @@
 <template>
-    Homepage works!
+    <div>
+        Sign in
+    </div>
 </template>
 <script setup>
 </script>
