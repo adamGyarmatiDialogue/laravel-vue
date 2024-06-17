@@ -14,3 +14,20 @@ const router = createRouter({
 const app = createApp({});
 app.use(router);
 app.mount("#app");
+
+/**
+ * Custom functions
+ * ErrorHandling
+ */
+window.getErrorMessage = (error) => {
+    let errorData = error.response.data;
+    let errorMessages = [];
+    if (errorData.errors) {
+        for (let key in errorData.errors) {
+            let errorMessage = errorData.errors[key][0];
+            errorMessages.push(errorMessage);
+        }
+    }
+    return errorMessages[0] ?? "Unknown error";
+    // return errorMessages ?? ["Unknown error"];
+};

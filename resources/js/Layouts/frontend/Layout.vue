@@ -1,10 +1,10 @@
 <template>
     <div class="fe-layout">
-        <Header  />
+        <Header />
 
         <main class="fe-layout_main">
-            <div class="container">
-            <router-view></router-view>
+            <div class="container p-4">
+                <router-view></router-view>
             </div>
         </main>
     </div>

@@ -22,5 +22,5 @@
         </div>
     </div>
 </template>
-<script>
-</script setup>
+<script setup>
+</script>
