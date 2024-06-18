@@ -16,5 +16,7 @@ class User extends Model
         "email",
         "username",
         "password",
+        "is_admin",
+        "is_builtin",
     ];
 }
