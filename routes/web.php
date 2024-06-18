@@ -1,14 +1,17 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /**
  * API routes
  */
-Route::post("/api/v1/users", [UsersController::class, "signUp"]);
-Route::post("/api/v1/users/login", [UsersController::class, "signIn"]);
+require "users.php";
+
+/**
+ * Admin routes
+ */
+require "admin/initialize.php";
 
 /**
  * App routes
