@@ -69,7 +69,7 @@ const state = reactive({
 function signUp() {
     state.working = true;
     state.successMessage = "";
-    state.errorMessages = "";
+    state.errorMessages = [];
     axios.post(" /api/v1/users", signUpForm)
         .then((response) => {
             state.successMessage = response.data.message;

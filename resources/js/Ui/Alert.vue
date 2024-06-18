@@ -1,17 +1,21 @@
 <template>
     <div class="alert alert-danger p-2">
-        {{ messages[errorType][0] }}
+        {{ message ? message : messages[errorType][0] }}
     </div>
 </template>
 <script setup>
 defineProps({
     messages: {
         type: Object,
-        required: true,
+        required: false,
+    },
+    message: {
+        type: String,
+        required: false,
     },
     errorType: {
         type: String,
-        required: true,
+        required: false,
     }
 })
 </script>
