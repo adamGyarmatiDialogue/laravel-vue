@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
  * API routes
  */
 Route::post("/api/v1/users", [UsersController::class, "signUp"]);
+Route::post("/api/v1/users/login", [UsersController::class, "signIn"]);
 
 /**
  * App routes
