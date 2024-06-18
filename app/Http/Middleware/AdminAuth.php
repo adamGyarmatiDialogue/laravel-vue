@@ -17,44 +17,35 @@ class AdminAuth
         // Check the users token
         $header = $request->header();
 
-        if (!array_key_exists("usertoken", $header)) {
-            return abort(HTTPResponse::HTTP_UNAUTHORIZED, "message.unauthorized");
-        }
+        // Validate header
+        $this->checkTheHeaderHasTokenHeader($header);
 
-        // check data
-        $token = $header["usertoken"][0];
-        $data = explode(";", base64_decode($token));
+        // Get token from header
+        $token = $this->getTokenFromHeader($header);
 
-        if (sizeof($data) !== 3) {
-            return abort(HTTPResponse::HTTP_BAD_REQUEST, "message.bad_request");
-        }
+        // Validate token
+        $this->validateToken($token);
 
         // Check the user
-        $adminId = $data[1];
-        $admin = User::whereId($adminId)->first();
+        $adminId = $this->getAdminIdFromToken($token);
+        $admin = $this->getAdminById($adminId);
 
-        if (!$admin) {
-            return abort(HTTPResponse::HTTP_FORBIDDEN, "message.forbidden");
-        }
+        // Check Admin is exist
+        $this->checkAdminIsExist($admin);
 
-        if ($admin->is_admin !== RecordStatus::ACTIVE->value) {
-            return abort(HTTPResponse::HTTP_FORBIDDEN, "message.forbidden");
-        }
+        $this->checkAdminIsAdmin($admin);
 
-        if ($admin->status !== RecordStatus::ACTIVE->value) {
-            return abort(HTTPResponse::HTTP_FORBIDDEN, "message.forbidden");
-        }
+        $this->checkAdminStatusIsActive($admin);
 
         // DB query debug
         // \DB::enableQueryLog();
         // Check users Login
-        $userLogin = UserLogin::where([
-            ["user_id", $admin->id],
-            ["token", $token],
-            ["ip_address", $request->ip()],
-            ["status", RecordStatus::ACTIVE->value],
-        ])
-            ->first();
+        $userLogin = $this->findUserLoginByAdminAndRequestData(
+            $admin->id,
+            $token,
+            $request->ip(),
+            RecordStatus::ACTIVE->value
+        );
         // $ql = \DB::getQueryLog();
         // \Log::debug(end($ql));
 
@@ -69,5 +60,73 @@ class AdminAuth
         ]);
 
         return $next($request);
+    }
+
+    /**
+     * Check the header has usertoken header
+     *
+     * @param $header
+     */
+    private function checkTheHeaderHasTokenHeader($header)
+    {
+        if (!array_key_exists("usertoken", $header)) {
+            return abort(HTTPResponse::HTTP_UNAUTHORIZED, "message.unauthorized");
+        }
+    }
+
+    private function getTokenFromHeader($header): string
+    {
+        return $header["usertoken"][0];
+    }
+
+    private function validateToken(string $token)
+    {
+        $data = explode(";", base64_decode($token));
+
+        if (sizeof($data) !== 3) {
+            return abort(HTTPResponse::HTTP_BAD_REQUEST, "message.bad_request");
+        }
+    }
+
+    private function getAdminIdFromToken(string $token): int
+    {
+        return explode(";", base64_decode($token))[1];
+    }
+
+    private function getAdminById(int $adminId): User
+    {
+        return User::whereId($adminId)->first();
+    }
+
+    private function checkAdminIsExist(User $admin)
+    {
+        if (!$admin) {
+            return abort(HTTPResponse::HTTP_FORBIDDEN, "message.forbidden");
+        }
+    }
+
+    private function checkAdminIsAdmin(User $admin)
+    {
+        if ($admin->is_admin !== RecordStatus::ACTIVE->value) {
+            return abort(HTTPResponse::HTTP_FORBIDDEN, "message.forbidden");
+        }
+    }
+
+    private function checkAdminStatusIsActive(User $admin)
+    {
+        if ($admin->status !== RecordStatus::ACTIVE->value) {
+            return abort(HTTPResponse::HTTP_FORBIDDEN, "message.forbidden");
+        }
+    }
+
+    private function findUserLoginByAdminAndRequestData(int $adminId, string $token, string $requestIp, int $status)
+    {
+        return UserLogin::where([
+            ["user_id", $adminId],
+            ["token", $token],
+            ["ip_address", $requestIp],
+            ["status", $status],
+        ])
+            ->first();
     }
 }
