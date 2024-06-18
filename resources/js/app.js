@@ -2,9 +2,10 @@ import "./bootstrap";
 import { createApp } from "vue/dist/vue.esm-bundler";
 import { createRouter, createWebHistory } from "vue-router";
 import FrontendRoutes from "./Routes/Frontend/Routes";
+import AdminRoutes from "./Routes/Admin/Routes";
 
 // Routes
-const routes = [...FrontendRoutes];
+const routes = [...FrontendRoutes, ...AdminRoutes];
 const router = createRouter({
     history: createWebHistory(),
     routes: routes,

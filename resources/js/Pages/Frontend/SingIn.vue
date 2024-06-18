@@ -47,7 +47,7 @@ function signIn() {
         .then((response) => {
             console.log(response.data["userToken"]);
             localStorage.setItem("userToken", response.data.userToken);
-            router.push("/");
+            router.push("/admin");
         })
         .catch((error) => {
             if (error.response.data.message) {
