@@ -93,12 +93,12 @@ class AdminAuth
         return explode(";", base64_decode($token))[1];
     }
 
-    private function getAdminById(int $adminId): User
+    private function getAdminById(int $adminId)
     {
         return User::whereId($adminId)->first();
     }
 
-    private function checkAdminIsExist(User $admin)
+    private function checkAdminIsExist($admin)
     {
         if (!$admin) {
             return abort(HTTPResponse::HTTP_FORBIDDEN, "message.forbidden");
