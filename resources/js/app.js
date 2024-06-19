@@ -1,6 +1,7 @@
 import "./bootstrap";
 import { createApp } from "vue/dist/vue.esm-bundler";
 import { createRouter, createWebHistory } from "vue-router";
+import { createPinia } from "pinia";
 import FrontendRoutes from "./Routes/Frontend/Routes";
 import AdminRoutes from "./Routes/Admin/Routes";
 import axios from "axios";
@@ -13,8 +14,10 @@ const router = createRouter({
 });
 
 // Run
+const pinia = createPinia();
 const app = createApp({});
 app.use(router);
+app.use(pinia);
 app.mount("#app");
 
 // Interceptors
